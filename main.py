@@ -35,6 +35,9 @@ def main() -> int:
     with open(path, "wb") as f:
         f.write(data)
 
+    # Read-back gate: the bytes on disk must be exactly the word --
+    # same bytes, same length (9), same pinned sha256 -- so a partial
+    # or corrupted write fails loudly instead of submitting a wrong word.
     with open(path, "rb") as f:
         back = f.read()
     if back != data:
